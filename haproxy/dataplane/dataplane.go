@@ -50,7 +50,7 @@ func (t *tnx) ensureTnx() error {
 		return nil
 	}
 	res := models.Transaction{}
-	err := t.client.makeReq(http.MethodPost, fmt.Sprintf("/v1/services/haproxy/transactions?version=%d", t.client.version), nil, &res)
+	err := t.client.makeReq(http.MethodPost, fmt.Sprintf("/v2/services/haproxy/transactions?version=%d", t.client.version), nil, &res)
 	if err != nil {
 		return err
 	}
@@ -70,17 +70,17 @@ func (c *Dataplane) Info() (*models.ProcessInfo, error) {
 }
 
 func (c *Dataplane) Ping() error {
-	return c.makeReq(http.MethodGet, "/v1/specification", nil, nil)
+	return c.makeReq(http.MethodGet, "/v2/specification", nil, nil)
 }
 
 func (c *Dataplane) Stats() (models.NativeStats, error) {
 	res := models.NativeStats{}
-	return res, c.makeReq(http.MethodGet, "/v1/services/haproxy/stats/native", nil, &res)
+	return res, c.makeReq(http.MethodGet, "/v2/services/haproxy/stats/native", nil, &res)
 }
 
 func (t *tnx) Commit() error {
 	if t.txID != "" {
-		err := t.client.makeReq(http.MethodPut, fmt.Sprintf("/v1/services/haproxy/transactions/%s", t.txID), nil, nil)
+		err := t.client.makeReq(http.MethodPut, fmt.Sprintf("/v2/services/haproxy/transactions/%s", t.txID), nil, nil)
 		if err != nil {
 			return err
 		}
