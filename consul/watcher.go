@@ -4,6 +4,7 @@ import (
 	"crypto/x509"
 	"fmt"
 	"reflect"
+	"sort"
 	"sync"
 	"time"
 
@@ -483,6 +484,10 @@ func (w *Watcher) genCfg() Config {
 				Weight:  weight,
 			})
 		}
+
+		sort.Slice(upstream.Nodes, func(i, j int) bool {
+			return upstream.Nodes[i].Name < upstream.Nodes[j].Name
+		})
 
 		config.Upstreams = append(config.Upstreams, upstream)
 	}
